@@ -1,24 +1,54 @@
 package com.example.onlineshoppingapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.*;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Electronics.class, name = "electronics"),
-        @JsonSubTypes.Type(value = Clothing.class, name = "clothing")
-})
-public abstract class Product {
-    protected String name;
-    protected double price;
+@Entity
+@Table(name = "products")
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private double price;
+
+    private String category;
+
+    @Column(name = "stock_quantity")
+    private int stockQuantity;
+
+    // Пустой конструктор (обязательно для JPA)
     public Product() {}
-    public Product(String name, double price) {
+
+    // Конструктор с параметрами
+    public Product(String name, double price, String category, int stockQuantity) {
         this.name = name;
         this.price = price;
+        this.category = category;
+        this.stockQuantity = stockQuantity;
     }
 
-    public abstract String getCategory();
+    // Геттеры
+    public Long getId() { return id; }
     public String getName() { return name; }
     public double getPrice() { return price; }
+    public String getCategory() { return category; }
+    public int getStockQuantity() { return stockQuantity; }
+
+    // Сеттеры
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setPrice(double price) { this.price = price; }
+    public void setCategory(String category) { this.category = category; }
+    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+
+    // toString для отладки
+    @Override
+    public String toString() {
+        return String.format("Product[id=%d, name='%s', price=%.2f, category='%s', stock=%d]",
+                id, name, price, category, stockQuantity);
+    }
 }
