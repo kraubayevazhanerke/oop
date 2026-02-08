@@ -1,6 +1,7 @@
 package com.example.onlineshoppingapi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "products")
@@ -9,43 +10,42 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Product name is required")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     @Column(nullable = false)
     private String name;
 
+    @NotNull(message = "Price is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     @Column(nullable = false)
-    private double price;
+    private Double price;
 
     private String category;
 
+    @Min(value = 0, message = "Stock quantity cannot be negative")
     @Column(name = "stock_quantity")
-    private int stockQuantity;
+    private Integer stockQuantity;
 
-    // Пустой конструктор (обязательно для JPA)
     public Product() {}
 
-    // Конструктор с параметрами
-    public Product(String name, double price, String category, int stockQuantity) {
+    public Product(String name, Double price, String category, Integer stockQuantity) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.stockQuantity = stockQuantity;
     }
 
-    // Геттеры
     public Long getId() { return id; }
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    public String getCategory() { return category; }
-    public int getStockQuantity() { return stockQuantity; }
-
-    // Сеттеры
     public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public void setPrice(double price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
-    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+    public Integer getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
 
-    // toString для отладки
     @Override
     public String toString() {
         return String.format("Product[id=%d, name='%s', price=%.2f, category='%s', stock=%d]",
