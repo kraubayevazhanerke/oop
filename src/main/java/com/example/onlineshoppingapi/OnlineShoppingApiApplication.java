@@ -37,8 +37,8 @@ public class OnlineShoppingApiApplication implements CommandLineRunner {
         }
 
         if (customerRepository.count() == 0) {
-            Customer c1 = new Customer("Kraubayeva Zhanerke", "zhanerke@example.com", "123 Main St");
-            Customer c2 = new Customer("Abai Aisha", "aisha@example.com", "456 Oak Ave");
+            Customer c1 = new Customer("Kraubayeva Zhanerke", "zhanerke@example.com", "87004972409");
+            Customer c2 = new Customer("Abai Aisha", "aisha@example.com", "875587980");
 
             customerRepository.save(c1);
             customerRepository.save(c2);
